@@ -602,7 +602,7 @@ namespace esphome
 
             if(enabled)
             {
-                ESP_LOGI(TAG, "Pairing Mode active for %d", this->pairing_timeout_);
+                ESP_LOGI(TAG, "Pairing Mode active for %d seconds", this->pairing_timeout_);
                 ESP_LOGI(TAG, "Waiting for Nuki to enter pairing mode...");
 
                 // Turn on for ...

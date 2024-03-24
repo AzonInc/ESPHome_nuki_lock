@@ -81,7 +81,7 @@ CONFIG_SCHEMA = lock.LOCK_SCHEMA.extend({
         entity_category=ENTITY_CATEGORY_CONFIG,
         icon="mdi:bluetooth-connect",
     ),
-    cv.Optional(CONF_PAIRING_TIMEOUT, default="5min"): cv.positive_time_period_seconds,
+    cv.Optional(CONF_PAIRING_TIMEOUT, default="300s"): cv.positive_time_period_seconds,
     cv.Optional(CONF_ON_PAIRING_MODE_ON): automation.validate_automation(
         {
             cv.GenerateID(CONF_TRIGGER_ID): cv.declare_id(PairingModeOnTrigger),
