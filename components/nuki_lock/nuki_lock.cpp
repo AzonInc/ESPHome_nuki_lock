@@ -598,17 +598,15 @@ namespace esphome
 
         void NukiLockComponent::set_pairing_mode(bool enabled)
         {
-            uint16_t timer_minutes = 5;
-
             this->pairing_mode_ = enabled;
 
             if(enabled)
             {
-                ESP_LOGI(TAG, "Pairing Mode active for %d minutes", timer_minutes);
+                ESP_LOGI(TAG, "Pairing Mode active for %d", this->pairing_timeout_);
                 ESP_LOGI(TAG, "Waiting for Nuki to enter pairing mode...");
 
-                // Turn on for 5 Minutes
-                this->pairing_mode_timer_ = millis() + (timer_minutes * 60 * 1000);
+                // Turn on for ...
+                this->pairing_mode_timer_ = millis() + (this->pairing_timeout_ * 1000);
             }
             else
             {
