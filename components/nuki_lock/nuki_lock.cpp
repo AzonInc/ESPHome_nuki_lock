@@ -233,7 +233,7 @@ namespace esphome
             // Terminate stale Bluetooth connections
             this->nukiLock_.updateConnectionState();
 
-            if(this->pairing_mode_)
+            if(this->pairing_mode_ && this->pairing_mode_timer_ != 0)
             {
                 if(millis() > this->pairing_mode_timer_)
                 {
@@ -606,8 +606,6 @@ namespace esphome
             else
             {
                 ESP_LOGI(TAG, "Pairing Mode inactive");
-                this->pairing_mode_timer_ = 0;
-
                 this->pairing_mode_off_callback_.call();
             }
         }
