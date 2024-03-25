@@ -601,14 +601,14 @@ namespace esphome
                 // Turn on for ... seconds
                 this->pairing_mode_timer_ = millis() + (this->pairing_timeout_ * 1000);
 
-                this->parent_->pairing_mode_on_callback_.call();
+                this->pairing_mode_on_callback_.call();
             }
             else
             {
                 ESP_LOGI(TAG, "Pairing Mode inactive");
                 this->pairing_mode_timer_ = 0;
 
-                this->parent_->pairing_mode_off_callback_.call();
+                this->pairing_mode_off_callback_.call();
             }
         }
 
