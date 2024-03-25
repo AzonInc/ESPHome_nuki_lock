@@ -26,7 +26,7 @@ CONF_DOOR_SENSOR = "door_sensor"
 CONF_DOOR_SENSOR_STATE = "door_sensor_state"
 
 CONF_SET_PAIRING_MODE = "pairing_mode"
-CONF_PAIRING_TIMEOUT = "5min"
+CONF_PAIRING_TIMEOUT = "pairing_timeout"
 
 CONF_ON_PAIRING_MODE_ON = "on_pairing_mode_on_action"
 CONF_ON_PAIRING_MODE_OFF = "on_pairing_mode_off_action"
