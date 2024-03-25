@@ -235,11 +235,11 @@ namespace esphome
 
             if(this->pairing_mode_ && this->pairing_mode_timer_ != 0)
             {
-                if(millis() > this->pairing_mode_timer_)
+                /*if(millis() > this->pairing_mode_timer_)
                 {
                     ESP_LOGV(TAG, "Pairing Timeout, turn off pairing mode");
                     this->set_pairing_mode(false);
-                }
+                }*/
             }
 
             if (millis() - lastCommandExecutedTime_ < command_cooldown_millis)
@@ -595,17 +595,17 @@ namespace esphome
 
             if(enabled)
             {
-                ESP_LOGI(TAG, "Pairing Mode active for %d seconds", this->pairing_timeout_);
+                ESP_LOGI(TAG, "Pairing Mode turned on for %d seconds", this->pairing_timeout_);
+                this->pairing_mode_on_callback_.call();
+
                 ESP_LOGI(TAG, "Waiting for Nuki to enter pairing mode...");
 
                 // Turn on for ... seconds
                 this->pairing_mode_timer_ = millis() + (this->pairing_timeout_ * 1000);
-
-                this->pairing_mode_on_callback_.call();
             }
             else
             {
-                ESP_LOGI(TAG, "Pairing Mode inactive");
+                ESP_LOGI(TAG, "Pairing Mode turned off");
                 this->pairing_mode_off_callback_.call();
             }
         }
