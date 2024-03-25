@@ -237,6 +237,7 @@ namespace esphome
             {
                 if(millis() > this->pairing_mode_timer_)
                 {
+                    ESP_LOGV(TAG, "Pairing Timeout, turn off pairing mode");
                     this->set_pairing_mode(false);
                 }
             }
@@ -585,35 +586,30 @@ namespace esphome
         void NukiLockPairingModeSwitch::write_state(bool state)
         {
             this->parent_->set_pairing_mode(state);
-
-            if(state)
-            {
-                this->parent_->pairing_mode_on_callback_.call();
-            }
-            else
-            {
-                this->parent_->pairing_mode_off_callback_.call();
-            }
         }
 
         void NukiLockComponent::set_pairing_mode(bool enabled)
         {
             this->pairing_mode_ = enabled;
+            this->pairing_mode_switch_->publish_state(this->pairing_mode_);
 
             if(enabled)
             {
                 ESP_LOGI(TAG, "Pairing Mode active for %d seconds", this->pairing_timeout_);
                 ESP_LOGI(TAG, "Waiting for Nuki to enter pairing mode...");
 
-                // Turn on for ...
+                // Turn on for ... seconds
                 this->pairing_mode_timer_ = millis() + (this->pairing_timeout_ * 1000);
+
+                this->parent_->pairing_mode_on_callback_.call();
             }
             else
             {
                 ESP_LOGI(TAG, "Pairing Mode inactive");
-            }
+                this->pairing_mode_timer_ = 0;
 
-            this->pairing_mode_switch_->publish_state(this->pairing_mode_);
+                this->parent_->pairing_mode_off_callback_.call();
+            }
         }
 
         void NukiLockComponent::add_pairing_mode_on_callback(std::function<void()> &&callback)
