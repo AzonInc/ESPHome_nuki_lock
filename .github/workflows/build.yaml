@@ -26,3 +26,12 @@
           with:
             yaml-file: .github/example-project-dev.yaml
             version: latest
+
+        - name: Send Discord failure notification
+          if: failure()
+          uses: appleboy/discord-action@master
+          with:
+            webhook_id: ${{ secrets.DISCORD_WEBHOOK_ID }}
+            webhook_token: ${{ secrets.DISCORD_WEBHOOK_TOKEN }}
+            color: "#FF6961"
+            message: "The Nuki Lock component build failed: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
