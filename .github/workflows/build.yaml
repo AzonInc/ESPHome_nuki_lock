@@ -34,4 +34,4 @@
             webhook_id: ${{ secrets.DISCORD_WEBHOOK_ID }}
             webhook_token: ${{ secrets.DISCORD_WEBHOOK_TOKEN }}
             color: "#FF6961"
-            message: "The Nuki Lock component build failed: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+            message: "Nuki Lock component: Build failed: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
