@@ -4,15 +4,15 @@ esphome:
 
   libraries:
     - Preferences
-    - https://github.com/h2zero/NimBLE-Arduino
+    - https://github.com/h2zero/NimBLE-Arduino#1.4.0
     - Crc16
     - https://github.com/AzonInc/NukiBleEsp32
 
 esp32:
   framework:
     type: arduino
-    version: 2.0.3
-    platform_version: 5.3.0
+    version: 2.0.16
+    platform_version: 6.7.0
 
 packages:
   common: !include shared-config.yaml

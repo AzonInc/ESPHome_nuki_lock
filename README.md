@@ -24,7 +24,7 @@ Add the following to the ESPHome yaml file:
 esphome:
   libraries:
   - Preferences
-  - https://github.com/h2zero/NimBLE-Arduino
+  - https://github.com/h2zero/NimBLE-Arduino#1.4.0
   - Crc16
   - https://github.com/AzonInc/NukiBleEsp32
 
