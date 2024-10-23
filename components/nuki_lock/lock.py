@@ -14,7 +14,7 @@ from esphome.const import (
     CONF_TRIGGER_ID
 )
 
-AUTO_LOAD = ["binary_sensor", "text_sensor", "sensor", "switch", "button", "number"]
+AUTO_LOAD = ["binary_sensor", "text_sensor", "sensor", "switch", "button", "number", "select"]
 
 CONF_IS_CONNECTED = "is_connected"
 CONF_IS_PAIRED = "is_paired"
