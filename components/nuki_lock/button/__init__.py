@@ -4,14 +4,16 @@ import esphome.config_validation as cv
 from esphome.const import (
     ENTITY_CATEGORY_CONFIG,
 )
-from .. import CONF_NUKI_LOCK_ID, NukiLock, nuki_lock_ns
+from .. import CONF_NUKI_LOCK_ID, NukiLockComponent, nuki_lock_ns
 
 NukiLockUnpairButton = nuki_lock_ns.class_("NukiLockUnpairButton", button.Button, cg.Component)
+
+DEPENDENCIES = ["nuki_lock"]
 
 CONF_UNPAIR_BUTTON = "unpair"
 
 CONFIG_SCHEMA = {
-    cv.GenerateID(CONF_NUKI_LOCK_ID): cv.use_id(NukiLock),
+    cv.GenerateID(CONF_NUKI_LOCK_ID): cv.use_id(NukiLockComponent),
     cv.Optional(CONF_UNPAIR_BUTTON): button.button_schema(
         NukiLockUnpairButton,
         entity_category=ENTITY_CATEGORY_CONFIG,

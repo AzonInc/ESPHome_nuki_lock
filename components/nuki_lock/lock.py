@@ -7,8 +7,6 @@ from esphome.const import (
     CONF_TRIGGER_ID
 )
 
-AUTO_LOAD = []
-
 CONF_NUKI_LOCK_ID = "nuki_lock_id"
 
 CONF_SECURITY_PIN = "security_pin"
@@ -21,14 +19,14 @@ CONF_ON_PAIRING_MODE_OFF = "on_pairing_mode_off_action"
 CONF_ON_PAIRED = "on_paired_action"
 
 nuki_lock_ns = cg.esphome_ns.namespace('nuki_lock')
-NukiLock = nuki_lock_ns.class_('NukiLockComponent', lock.Lock, cg.Component)
+NukiLockComponent = nuki_lock_ns.class_('NukiLockComponent', lock.Lock, cg.Component)
 
 PairingModeOnTrigger = nuki_lock_ns.class_("PairingModeOnTrigger", automation.Trigger.template())
 PairingModeOffTrigger = nuki_lock_ns.class_("PairingModeOffTrigger", automation.Trigger.template())
 PairedTrigger = nuki_lock_ns.class_("PairedTrigger", automation.Trigger.template())
 
 CONFIG_SCHEMA = lock.LOCK_SCHEMA.extend({
-    cv.GenerateID(): cv.declare_id(NukiLock),
+    cv.GenerateID(): cv.declare_id(NukiLockComponent),
     cv.Optional(CONF_PAIRING_TIMEOUT, default="300s"): cv.positive_time_period_seconds,
     cv.Optional(CONF_ON_PAIRING_MODE_ON): automation.validate_automation(
         {
@@ -79,7 +77,7 @@ NukiLockUnpairAction = nuki_lock_ns.class_(
 
 NUKI_LOCK_UNPAIR_SCHEMA = cv.Schema(
     {
-        cv.GenerateID(): cv.use_id(NukiLock)
+        cv.GenerateID(): cv.use_id(NukiLockComponent)
     }
 )
 
@@ -100,7 +98,7 @@ NukiLockPairingModeAction = nuki_lock_ns.class_(
 
 NUKI_LOCK_SET_PAIRING_MODE_SCHEMA = cv.Schema(
     {
-        cv.GenerateID(): cv.use_id(NukiLock),
+        cv.GenerateID(): cv.use_id(NukiLockComponent),
         cv.Required(CONF_SET_PAIRING_MODE): cv.templatable(cv.boolean)
     }
 )

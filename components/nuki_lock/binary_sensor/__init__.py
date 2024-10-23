@@ -7,7 +7,9 @@ from esphome.const import (
     DEVICE_CLASS_BATTERY,
     DEVICE_CLASS_DOOR
 )
-from .. import CONF_NUKI_LOCK_ID, NukiLock, nuki_lock_ns
+from .. import CONF_NUKI_LOCK_ID, NukiLockComponent, nuki_lock_ns
+
+DEPENDENCIES = ["nuki_lock"]
 
 CONF_IS_CONNECTED = "is_connected"
 CONF_IS_PAIRED = "is_paired"
@@ -16,7 +18,7 @@ CONF_BATTERY_LEVEL = "battery_level"
 CONF_DOOR_SENSOR = "door_sensor"
 
 CONFIG_SCHEMA = {
-    cv.GenerateID(CONF_NUKI_LOCK_ID): cv.use_id(NukiLock),
+    cv.GenerateID(CONF_NUKI_LOCK_ID): cv.use_id(NukiLockComponent),
     cv.Required(CONF_IS_CONNECTED): binary_sensor.binary_sensor_schema(
         device_class=DEVICE_CLASS_CONNECTIVITY,
         entity_category=ENTITY_CATEGORY_DIAGNOSTIC,

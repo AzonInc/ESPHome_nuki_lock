@@ -5,12 +5,14 @@ from esphome.const import (
     UNIT_PERCENT,
     DEVICE_CLASS_BATTERY,
 )
-from .. import CONF_NUKI_LOCK_ID, NukiLock, nuki_lock_ns
+from .. import CONF_NUKI_LOCK_ID, NukiLockComponent, nuki_lock_ns
+
+DEPENDENCIES = ["nuki_lock"]
 
 CONF_DOOR_SENSOR_STATE = "door_sensor_state"
 
 CONFIG_SCHEMA = {
-    cv.GenerateID(CONF_NUKI_LOCK_ID): cv.use_id(NukiLock),
+    cv.GenerateID(CONF_NUKI_LOCK_ID): cv.use_id(NukiLockComponent),
     cv.Optional(CONF_DOOR_SENSOR_STATE): text_sensor.text_sensor_schema(),
 }
 

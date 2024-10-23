@@ -5,12 +5,14 @@ from esphome.const import (
     UNIT_PERCENT,
     DEVICE_CLASS_BATTERY,
 )
-from .. import CONF_NUKI_LOCK_ID, NukiLock, nuki_lock_ns
+from .. import CONF_NUKI_LOCK_ID, NukiLockComponent, nuki_lock_ns
+
+DEPENDENCIES = ["nuki_lock"]
 
 CONF_BATTERY_LEVEL = "battery_level"
 
 CONFIG_SCHEMA = {
-    cv.GenerateID(CONF_NUKI_LOCK_ID): cv.use_id(NukiLock),
+    cv.GenerateID(CONF_NUKI_LOCK_ID): cv.use_id(NukiLockComponent),
     cv.Optional(CONF_BATTERY_LEVEL): sensor.sensor_schema(
         device_class=DEVICE_CLASS_BATTERY,
         unit_of_measurement=UNIT_PERCENT,
