@@ -120,6 +120,15 @@ void NukiLockComponent::update_config() {
         ESP_LOGD(TAG, "requestConfig has resulted in %s (%d)", confReqResultAsString, confReqResult);
         keypad_paired_ = config.hasKeypad;
 
+        if (this->button_enabled_switch_ != nullptr)
+            this->button_enabled_switch_->publish_state(config.buttonEnabled);
+        
+        if (this->led_enabled_switch_ != nullptr)
+            this->led_enabled_switch_->publish_state(config.ledEnabled);
+
+        if (this->led_brightness_number_ != nullptr)
+            this->led_brightness_number_->publish_state(config.ledBrightness);
+
     } else {
         ESP_LOGE(TAG, "requestConfig has resulted in %s (%d)", confReqResultAsString, confReqResult);
         this->config_update_ = true;
@@ -513,9 +522,55 @@ void NukiLockPairingModeSwitch::write_state(bool state) {
     this->parent_->set_pairing_mode(state);
 }
 
+
+// Button Enabled Switch
+void NukiLockButtonEnabledSwitch::setup() {
+    this->publish_state(false);
+}
+
+void NukiLockButtonEnabledSwitch::dump_config() {
+    LOG_SWITCH(TAG, "Button Enabled", this);
+}
+
+void NukiLockButtonEnabledSwitch::write_state(bool state) {
+    this->parent_->set_button_enabled(state);
+}
+
+
+// LED Enabled Switch
+void NukiLockLedEnabledSwitch::setup() {
+    this->publish_state(false);
+}
+
+void NukiLockLedEnabledSwitch::dump_config() {
+    LOG_SWITCH(TAG, "LED Enabled", this);
+}
+
+void NukiLockLedEnabledSwitch::write_state(bool state) {
+    this->parent_->set_led_enabled(state);
+}
+
+
+// LED Brightness Number
+void NukiLockLedBrightnessNumber::setup() {
+    this->publish_state(0);
+}
+
+void NukiLockLedBrightnessNumber::dump_config() {
+    LOG_NUMBER(TAG, "LED Brightness", this);
+}
+
+void NukiLockLedBrightnessNumber::control(float value) {
+    this->parent_->set_led_brightness(value);
+}
+
+
+// Actions
 void NukiLockComponent::set_pairing_mode(bool enabled) {
     this->pairing_mode_ = enabled;
-    this->pairing_mode_switch_->publish_state(enabled);
+
+    if (this->pairing_mode_switch_ != nullptr)
+        this->pairing_mode_switch_->publish_state(enabled);
 
     if(enabled) {
         ESP_LOGI(TAG, "Pairing Mode turned on for %d seconds", this->pairing_timeout_);
@@ -533,6 +588,31 @@ void NukiLockComponent::set_pairing_mode(bool enabled) {
     }
 }
 
+void NukiLockComponent::set_button_enabled(bool enabled) {
+
+    Nuki::CmdResult cmdResult = this->nukiLock_.setButtonEnabled(enabled);
+
+    if (cmdResult == Nuki::CmdResult::Success && this->button_enbutton_switch_ != nullptr) {
+        this->button_enabled_switch_->publish_state(enabled);
+}
+
+void NukiLockComponent::set_led_enabled(bool enabled) {
+    
+    Nuki::CmdResult cmdResult = this->nukiLock_.setLedEnabled(enabled);
+
+    if (cmdResult == Nuki::CmdResult::Success && this->led_enabled_switch_ != nullptr) {
+        this->led_enabled_switch_->publish_state(enabled);
+}
+
+void NukiLockComponent::set_led_brightness(float value) {
+    
+    Nuki::CmdResult cmdResult = this->nukiLock_.setLedBrightness(static_cast<uint8_t>(value));
+
+    if (cmdResult == Nuki::CmdResult::Success && this->led_brightness_number_ != nullptr) {
+        this->led_brightness_number_->publish_state(value);
+}
+
+// Callbacks
 void NukiLockComponent::add_pairing_mode_on_callback(std::function<void()> &&callback) {
     this->pairing_mode_on_callback_.add(std::move(callback));
 }

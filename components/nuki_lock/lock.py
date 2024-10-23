@@ -1,7 +1,7 @@
 import esphome.codegen as cg
 import esphome.config_validation as cv
 from esphome import automation
-from esphome.components import lock, binary_sensor, text_sensor, sensor, switch, button
+from esphome.components import lock, binary_sensor, text_sensor, sensor, switch, button, select, number
 from esphome.const import (
     CONF_ID, 
     CONF_BATTERY_LEVEL, 
@@ -26,6 +26,10 @@ CONF_BATTERY_LEVEL = "battery_level"
 CONF_DOOR_SENSOR = "door_sensor"
 CONF_DOOR_SENSOR_STATE = "door_sensor_state"
 
+CONF_BUTTON_ENABLED_SWITCH = "button_enabled"
+CONF_LED_ENABLED_SWITCH = "led_enabled"
+CONF_LED_BRIGHTNESS_NUMBER = "led_brightness"
+
 CONF_SET_PAIRING_MODE = "pairing_mode"
 CONF_PAIRING_TIMEOUT = "pairing_timeout"
 
@@ -38,6 +42,11 @@ NukiLock = nuki_lock_ns.class_('NukiLockComponent', lock.Lock, switch.Switch, cg
 
 NukiLockUnpairButton = nuki_lock_ns.class_("NukiLockUnpairButton", button.Button, cg.Component)
 NukiLockPairingModeSwitch = nuki_lock_ns.class_("NukiLockPairingModeSwitch", switch.Switch, cg.Component)
+
+NukiLockButtonEnabledSwitch = nuki_lock_ns.class_("NukiLockButtonEnabledSwitch", switch.Switch, cg.Component)
+NukiLockLedEnabledSwitch = nuki_lock_ns.class_("NukiLockLedEnabledSwitch", switch.Switch, cg.Component)
+NukiLockLedBrightnessNumber = nuki_lock_ns.class_("NukiLockLedBrightnessNumber", number.Number, cg.Component)
+#NukiLockButtonActionSelect = nuki_lock_ns.class_("NukiLockButtonActionSelect", select.Select, cg.Component)
 
 NukiLockUnpairAction = nuki_lock_ns.class_(
     "NukiLockUnpairAction", automation.Action
@@ -80,6 +89,21 @@ CONFIG_SCHEMA = lock.LOCK_SCHEMA.extend({
     ),
     cv.Optional(CONF_PAIRING_MODE_SWITCH): switch.switch_schema(
         NukiLockPairingModeSwitch,
+        entity_category=ENTITY_CATEGORY_CONFIG,
+        icon="mdi:bluetooth-connect",
+    ),
+    cv.Optional(CONF_BUTTON_ENABLED_SWITCH): switch.switch_schema(
+        NukiLockButtonEnabledSwitch,
+        entity_category=ENTITY_CATEGORY_CONFIG,
+        icon="mdi:bluetooth-connect",
+    ),
+    cv.Optional(CONF_LED_ENABLED_SWITCH): switch.switch_schema(
+        NukiLockLedEnabledSwitch,
+        entity_category=ENTITY_CATEGORY_CONFIG,
+        icon="mdi:bluetooth-connect",
+    ),
+    cv.Optional(CONF_LED_BRIGHTNESS_NUMBER): number.number_schema(
+        NukiLockLedBrightnessNumber,
         entity_category=ENTITY_CATEGORY_CONFIG,
         icon="mdi:bluetooth-connect",
     ),
@@ -139,7 +163,23 @@ async def to_code(config):
         await cg.register_parented(sw, config[CONF_ID])
         cg.add(var.set_pairing_mode_switch(sw))
 
-    cg.add(var.set_pairing_timeout(config[CONF_PAIRING_TIMEOUT]))
+    if CONF_BUTTON_ENABLED_SWITCH in config:
+        sw = await switch.new_switch(config[CONF_BUTTON_ENABLED_SWITCH])
+        await cg.register_parented(sw, config[CONF_ID])
+        cg.add(var.set_button_enabled_switch(sw))
+
+    if CONF_LED_ENABLED_SWITCH in config:
+        sw = await switch.new_switch(config[CONF_LED_ENABLED_SWITCH])
+        await cg.register_parented(sw, config[CONF_ID])
+        cg.add(var.set_led_enabled_switch(sw))
+
+    if CONF_LED_BRIGHTNESS_NUMBER in config:
+        num = await number.new_number(config[CONF_LED_BRIGHTNESS_NUMBER], min_value=0, max_value=5, step=1)
+        await cg.register_parented(num, config[CONF_ID])
+        cg.add(var.set_led_brightness_number(num))
+
+    if CONF_PAIRING_TIMEOUT in config:
+        cg.add(var.set_pairing_timeout(config[CONF_PAIRING_TIMEOUT]))
 
     for conf in config.get(CONF_ON_PAIRING_MODE_ON, []):
         trigger = cg.new_Pvariable(conf[CONF_TRIGGER_ID], var)

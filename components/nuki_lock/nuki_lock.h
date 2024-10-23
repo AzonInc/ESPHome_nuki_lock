@@ -49,6 +49,9 @@ class NukiLockComponent : public lock::Lock, public PollingComponent, public api
         void set_door_sensor_state(text_sensor::TextSensor *door_sensor_state) { this->door_sensor_state_ = door_sensor_state; }
         void set_unpair_button(button::Button *unpair_button) { this->unpair_button_ = unpair_button; }
         void set_pairing_mode_switch(switch_::Switch *pairing_mode_switch) { this->pairing_mode_switch_ = pairing_mode_switch; }
+        void set_button_enabled_switch(switch_::Switch *button_enabled_switch) { this->button_enabled_switch_ = button_enabled_switch; }
+        void set_led_enabled_switch(switch_::Switch *led_enabled_switch) { this->led_enabled_switch_ = led_enabled_switch; }
+        void set_led_brightness_number(number::Number *led_brightness_number) { this->led_brightness_number_ = led_brightness_number; }
         void set_security_pin(uint16_t security_pin) { this->security_pin_ = security_pin; }
         void set_pairing_timeout(uint16_t pairing_timeout) { this->pairing_timeout_ = pairing_timeout; }
         void add_pairing_mode_on_callback(std::function<void()> &&callback);
@@ -68,6 +71,9 @@ class NukiLockComponent : public lock::Lock, public PollingComponent, public api
         void unpair();
 
         void set_pairing_mode(bool enabled);
+        void set_button_enabled(bool enabled);
+        void set_led_enabled(bool enabled);
+        void set_led_brightness(float value);
 
         CallbackManager<void()> pairing_mode_on_callback_{};
         CallbackManager<void()> pairing_mode_off_callback_{};
@@ -88,6 +94,9 @@ class NukiLockComponent : public lock::Lock, public PollingComponent, public api
         sensor::Sensor *battery_level_{nullptr};
         button::Button *unpair_button_{nullptr};
         switch_::Switch *pairing_mode_switch_{nullptr};
+        switch_::Switch *button_enabled_switch_{nullptr};
+        switch_::Switch *led_enabled_switch_{nullptr};
+        number::Number *led_brightness_number_{nullptr};
 
         BleScanner::Scanner scanner_;
         NukiLock::KeyTurnerState retrievedKeyTurnerState_;
@@ -105,8 +114,8 @@ class NukiLockComponent : public lock::Lock, public PollingComponent, public api
 
         uint16_t security_pin_ = 0;
 
-        uint16_t pairing_timeout_ = 0;
         bool pairing_mode_ = false;
+        uint16_t pairing_timeout_ = 0;
         uint32_t pairing_mode_timer_ = 0;
 
     private:
@@ -188,6 +197,45 @@ class NukiLockPairingModeSwitch : public Component, public switch_::Switch {
         Trigger<> *turn_on_trigger_;
         Trigger<> *turn_off_trigger_;
         NukiLockComponent *parent_;
+};
+
+class NukiLockButtonEnabledSwitch : public Component, public switch_::Switch {
+    public:
+        Trigger<> *get_turn_on_trigger() const;
+        Trigger<> *get_turn_off_trigger() const;
+        void set_parent(NukiLockComponent *parent) { this->parent_ = parent; }
+    protected:
+        void setup() override;
+        void dump_config() override;
+        void write_state(bool state) override;
+        Trigger<> *turn_on_trigger_;
+        Trigger<> *turn_off_trigger_;
+        NukiLockComponent *parent_;
+};
+
+class NukiLockLedEnabledSwitch : public Component, public switch_::Switch {
+    public:
+        Trigger<> *get_turn_on_trigger() const;
+        Trigger<> *get_turn_off_trigger() const;
+        void set_parent(NukiLockComponent *parent) { this->parent_ = parent; }
+    protected:
+        void setup() override;
+        void dump_config() override;
+        void write_state(bool state) override;
+        Trigger<> *turn_on_trigger_;
+        Trigger<> *turn_off_trigger_;
+        NukiLockComponent *parent_;
+};
+
+class NukiLockLedBrightnessNumber : public Component, public number::Number {
+ public:
+    void set_parent(NukiLockComponent *parent) { this->parent_ = parent; }
+
+ protected:
+    void setup() override;
+    void dump_config() override;
+    void control(float value) override;
+    NukiLockComponent *parent_;
 };
 
 } //namespace nuki_lock
