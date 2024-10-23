@@ -178,15 +178,6 @@ class PairedTrigger : public Trigger<> {
         }
 };
 
-class NukiLockUnpairButton : public Component, public button::Button {
-    public:
-        void set_parent(NukiLockComponent *parent) { this->parent_ = parent; }
-    protected:
-        void press_action() override;
-        void dump_config() override;
-        NukiLockComponent *parent_;
-};
-
 class NukiLockPairingModeSwitch : public Component, public switch_::Switch {
     public:
         Trigger<> *get_turn_on_trigger() const;
@@ -199,45 +190,6 @@ class NukiLockPairingModeSwitch : public Component, public switch_::Switch {
         Trigger<> *turn_on_trigger_;
         Trigger<> *turn_off_trigger_;
         NukiLockComponent *parent_;
-};
-
-class NukiLockButtonEnabledSwitch : public Component, public switch_::Switch {
-    public:
-        Trigger<> *get_turn_on_trigger() const;
-        Trigger<> *get_turn_off_trigger() const;
-        void set_parent(NukiLockComponent *parent) { this->parent_ = parent; }
-    protected:
-        void setup() override;
-        void dump_config() override;
-        void write_state(bool state) override;
-        Trigger<> *turn_on_trigger_;
-        Trigger<> *turn_off_trigger_;
-        NukiLockComponent *parent_;
-};
-
-class NukiLockLedEnabledSwitch : public Component, public switch_::Switch {
-    public:
-        Trigger<> *get_turn_on_trigger() const;
-        Trigger<> *get_turn_off_trigger() const;
-        void set_parent(NukiLockComponent *parent) { this->parent_ = parent; }
-    protected:
-        void setup() override;
-        void dump_config() override;
-        void write_state(bool state) override;
-        Trigger<> *turn_on_trigger_;
-        Trigger<> *turn_off_trigger_;
-        NukiLockComponent *parent_;
-};
-
-class NukiLockLedBrightnessNumber : public Component, public number::Number {
- public:
-    void set_parent(NukiLockComponent *parent) { this->parent_ = parent; }
-
- protected:
-    void setup() override;
-    void dump_config() override;
-    void control(float value) override;
-    NukiLockComponent *parent_;
 };
 
 } //namespace nuki_lock

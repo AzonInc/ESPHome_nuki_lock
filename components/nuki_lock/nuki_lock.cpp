@@ -491,15 +491,6 @@ void NukiLockComponent::notify(Nuki::EventType eventType) {
     ESP_LOGI(TAG, "event notified %d", eventType);
 }
 
-// Unpair Button
-void NukiLockUnpairButton::press_action() {
-    this->parent_->unpair();
-}
-
-void NukiLockUnpairButton::dump_config() {
-    LOG_BUTTON(TAG, "Unpair", this);
-}
-
 void NukiLockComponent::unpair() {
     if(this->nukiLock_.isPairedWithLock()) {
         this->nukiLock_.unPairNuki();
@@ -508,62 +499,6 @@ void NukiLockComponent::unpair() {
         ESP_LOGE(TAG, "Unpair action called for unpaired Nuki");
     }
 }
-
-// Pairing Mode Switch
-void NukiLockPairingModeSwitch::setup() {
-    this->publish_state(false);
-}
-
-void NukiLockPairingModeSwitch::dump_config() {
-    LOG_SWITCH(TAG, "Pairing Mode", this);
-}
-
-void NukiLockPairingModeSwitch::write_state(bool state) {
-    this->parent_->set_pairing_mode(state);
-}
-
-
-// Button Enabled Switch
-void NukiLockButtonEnabledSwitch::setup() {
-    this->publish_state(false);
-}
-
-void NukiLockButtonEnabledSwitch::dump_config() {
-    LOG_SWITCH(TAG, "Button Enabled", this);
-}
-
-void NukiLockButtonEnabledSwitch::write_state(bool state) {
-    this->parent_->set_button_enabled(state);
-}
-
-
-// LED Enabled Switch
-void NukiLockLedEnabledSwitch::setup() {
-    this->publish_state(false);
-}
-
-void NukiLockLedEnabledSwitch::dump_config() {
-    LOG_SWITCH(TAG, "LED Enabled", this);
-}
-
-void NukiLockLedEnabledSwitch::write_state(bool state) {
-    this->parent_->set_led_enabled(state);
-}
-
-
-// LED Brightness Number
-void NukiLockLedBrightnessNumber::setup() {
-    this->publish_state(0);
-}
-
-void NukiLockLedBrightnessNumber::dump_config() {
-    LOG_NUMBER(TAG, "LED Brightness", this);
-}
-
-void NukiLockLedBrightnessNumber::control(float value) {
-    this->parent_->set_led_brightness(value);
-}
-
 
 // Actions
 void NukiLockComponent::set_pairing_mode(bool enabled) {
