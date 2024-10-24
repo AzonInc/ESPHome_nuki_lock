@@ -1,20 +1,19 @@
 import esphome.codegen as cg
 import esphome.config_validation as cv
 from esphome import automation
-from esphome.components import lock
 from esphome.const import (
     CONF_ID, 
     CONF_TRIGGER_ID
 )
 
 nuki_lock_ns = cg.esphome_ns.namespace('nuki_lock')
-NukiLockComponent = nuki_lock_ns.class_('NukiLockComponent', cg.Component, lock.Lock)
+NukiLockComponent = nuki_lock_ns.class_('NukiLockComponent', cg.Component)
 
 PairingModeOnTrigger = nuki_lock_ns.class_("PairingModeOnTrigger", automation.Trigger.template())
 PairingModeOffTrigger = nuki_lock_ns.class_("PairingModeOffTrigger", automation.Trigger.template())
 PairedTrigger = nuki_lock_ns.class_("PairedTrigger", automation.Trigger.template())
 
-CONF_NUKI_LOCK_ID = "nuki_lock_id"
+CONF_NUKI_HUB_ID = "nuki_hub_id"
 
 CONF_PAIRING_MODE_TIMEOUT = "pairing_mode_timeout"
 
@@ -51,6 +50,7 @@ CONFIG_SCHEMA = cv.All(
 )
 
 async def to_code(config):
+    cg.add_global(nuki_lock_ns.using)
     var = cg.new_Pvariable(config[CONF_ID])
     await cg.register_component(var, config)
     

@@ -16,8 +16,14 @@ external_components:
       type: local
       path: "../components/"
 
-
-
+nuki_lock:
+  pairing_mode_timeout: 30s
+  on_pairing_mode_on_action:
+    - lambda: ESP_LOGI("nuki_lock", "Pairing mode turned on");
+  on_pairing_mode_off_action:
+    - lambda: ESP_LOGI("nuki_lock", "Pairing mode turned off");
+  on_paired_action:
+    - lambda: ESP_LOGI("nuki_lock", "Paired sucessfuly");
 
 lock:
   - platform: nuki_lock

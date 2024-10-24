@@ -5,7 +5,7 @@ from esphome.const import (
     DEVICE_CLASS_SWITCH,
     ENTITY_CATEGORY_CONFIG,
 )
-from .. import CONF_NUKI_LOCK_ID, NukiLockComponent, nuki_lock_ns
+from .. import CONF_NUKI_HUB_ID, NukiLockComponent, nuki_lock_ns
 
 NukiLockPairingModeSwitch = nuki_lock_ns.class_("NukiLockPairingModeSwitch", switch.Switch, cg.Component)
 NukiLockButtonEnabledSwitch = nuki_lock_ns.class_("NukiLockButtonEnabledSwitch", switch.Switch, cg.Component)
@@ -16,7 +16,7 @@ CONF_BUTTON_ENABLED_SWITCH = "button_enabled"
 CONF_LED_ENABLED_SWITCH = "led_enabled"
 
 CONFIG_SCHEMA = {
-    cv.GenerateID(CONF_NUKI_LOCK_ID): cv.use_id(NukiLockComponent),
+    cv.GenerateID(CONF_NUKI_HUB_ID): cv.use_id(NukiLockComponent),
     cv.Optional(CONF_PAIRING_MODE_SWITCH): switch.switch_schema(
         NukiLockPairingModeSwitch,
         device_class=DEVICE_CLASS_SWITCH,
@@ -39,19 +39,19 @@ CONFIG_SCHEMA = {
 
 
 async def to_code(config):
-    nuki_lock_component = await cg.get_variable(config[CONF_NUKI_LOCK_ID])
+    nuki_lock_component = await cg.get_variable(config[CONF_NUKI_HUB_ID])
 
     if pairing_mode := config.get(CONF_PAIRING_MODE_SWITCH):
         s = await switch.new_switch(pairing_mode)
-        await cg.register_parented(s, config[CONF_NUKI_LOCK_ID])
+        await cg.register_parented(s, config[CONF_NUKI_HUB_ID])
         cg.add(nuki_lock_component.set_pairing_mode_switch(s))
 
     if button_enabled := config.get(CONF_BUTTON_ENABLED_SWITCH):
         s = await switch.new_switch(button_enabled)
-        await cg.register_parented(s, config[CONF_NUKI_LOCK_ID])
+        await cg.register_parented(s, config[CONF_NUKI_HUB_ID])
         cg.add(nuki_lock_component.set_button_enabled_switch(s))
 
     if led_enabled := config.get(CONF_LED_ENABLED_SWITCH):
         s = await switch.new_switch(led_enabled)
-        await cg.register_parented(s, config[CONF_NUKI_LOCK_ID])
+        await cg.register_parented(s, config[CONF_NUKI_HUB_ID])
         cg.add(nuki_lock_component.set_led_enabled_switch(s))

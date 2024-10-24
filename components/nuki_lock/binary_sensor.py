@@ -7,7 +7,7 @@ from esphome.const import (
     DEVICE_CLASS_BATTERY,
     DEVICE_CLASS_DOOR
 )
-from . import CONF_NUKI_LOCK_ID, NukiLockComponent
+from . import CONF_NUKI_HUB_ID, NukiLockComponent
 
 DEPENDENCIES = ["nuki_lock"]
 
@@ -18,7 +18,7 @@ CONF_BATTERY_LEVEL = "battery_level"
 CONF_DOOR_SENSOR = "door_sensor"
 
 CONFIG_SCHEMA = {
-    cv.GenerateID(CONF_NUKI_LOCK_ID): cv.use_id(NukiLockComponent),
+    cv.GenerateID(CONF_NUKI_HUB_ID): cv.use_id(NukiLockComponent),
     cv.Required(CONF_IS_CONNECTED): binary_sensor.binary_sensor_schema(
         device_class=DEVICE_CLASS_CONNECTIVITY,
         entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
@@ -36,7 +36,7 @@ CONFIG_SCHEMA = {
 }
 
 async def to_code(config):
-    nuki_lock_component = await cg.get_variable(config[CONF_NUKI_LOCK_ID])
+    nuki_lock_component = await cg.get_variable(config[CONF_NUKI_HUB_ID])
 
     if is_connected := config.get(CONF_IS_CONNECTED):
         sens = await binary_sensor.new_binary_sensor(is_connected)
