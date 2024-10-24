@@ -7,8 +7,6 @@ from esphome.const import (
     CONF_TRIGGER_ID
 )
 
-DEPENDENCIES = ["lock"]
-
 nuki_lock_ns = cg.esphome_ns.namespace('nuki_lock')
 NukiLockComponent = nuki_lock_ns.class_('NukiLockComponent', cg.Component, lock.Lock)
 
@@ -19,7 +17,7 @@ PairedTrigger = nuki_lock_ns.class_("PairedTrigger", automation.Trigger.template
 CONF_NUKI_LOCK_ID = "nuki_lock_id"
 
 CONF_SECURITY_PIN = "security_pin"
-CONF_PAIRING_TIMEOUT = "pairing_timeout"
+CONF_PAIRING_MODE_TIMEOUT = "pairing_mode_timeout"
 
 CONF_SET_PAIRING_MODE = "pairing_mode"
 
@@ -31,7 +29,7 @@ CONFIG_SCHEMA = cv.Schema(
     {
         cv.GenerateID(): cv.declare_id(NukiLockComponent),
         cv.Optional(CONF_SECURITY_PIN, default=0): cv.uint16_t,
-        cv.Optional(CONF_PAIRING_TIMEOUT, default="300s"): cv.positive_time_period_seconds,
+        cv.Optional(CONF_PAIRING_MODE_TIMEOUT, default="300s"): cv.positive_time_period_seconds,
         cv.Optional(CONF_ON_PAIRING_MODE_ON): automation.validate_automation(
             {
                 cv.GenerateID(CONF_TRIGGER_ID): cv.declare_id(PairingModeOnTrigger),
@@ -62,8 +60,8 @@ async def to_code(config):
     if CONF_SECURITY_PIN in config:
         cg.add(var.set_security_pin(config[CONF_SECURITY_PIN]))
     
-    if CONF_PAIRING_TIMEOUT in config:
-        cg.add(var.set_pairing_timeout(config[CONF_PAIRING_TIMEOUT]))
+    if CONF_PAIRING_MODE_TIMEOUT in config:
+        cg.add(var.set_pairing_mode_timeout(config[CONF_PAIRING_MODE_TIMEOUT]))
 
     for conf in config.get(CONF_ON_PAIRING_MODE_ON, []):
         trigger = cg.new_Pvariable(conf[CONF_TRIGGER_ID], var)

@@ -55,7 +55,7 @@ class NukiLockComponent : public lock::Lock, public PollingComponent, public api
         void set_led_enabled_switch(switch_::Switch *led_enabled_switch) { this->led_enabled_switch_ = led_enabled_switch; }
         void set_led_brightness_number(number::Number *led_brightness_number) { this->led_brightness_number_ = led_brightness_number; }
         void set_security_pin(uint16_t security_pin) { this->security_pin_ = security_pin; }
-        void set_pairing_timeout(uint16_t pairing_timeout) { this->pairing_timeout_ = pairing_timeout; }
+        void set_pairing_mode_timeout(uint16_t pairing_mode_timeout) { this->pairing_mode_timeout_ = pairing_mode_timeout; }
         void add_pairing_mode_on_callback(std::function<void()> &&callback);
         void add_pairing_mode_off_callback(std::function<void()> &&callback);
         void add_paired_callback(std::function<void()> &&callback);
@@ -92,12 +92,17 @@ class NukiLockComponent : public lock::Lock, public PollingComponent, public api
         binary_sensor::BinarySensor *is_paired_{nullptr};
         binary_sensor::BinarySensor *battery_critical_{nullptr};
         binary_sensor::BinarySensor *door_sensor_{nullptr};
+
         text_sensor::TextSensor *door_sensor_state_{nullptr};
+
         sensor::Sensor *battery_level_{nullptr};
+
         button::Button *unpair_button_{nullptr};
+
         switch_::Switch *pairing_mode_switch_{nullptr};
         switch_::Switch *button_enabled_switch_{nullptr};
         switch_::Switch *led_enabled_switch_{nullptr};
+
         number::Number *led_brightness_number_{nullptr};
 
         BleScanner::Scanner scanner_;
@@ -117,7 +122,7 @@ class NukiLockComponent : public lock::Lock, public PollingComponent, public api
         uint16_t security_pin_ = 0;
 
         bool pairing_mode_ = false;
-        uint16_t pairing_timeout_ = 0;
+        uint16_t pairing_mode_timeout_ = 0;
         uint32_t pairing_mode_timer_ = 0;
 
     private:
@@ -176,20 +181,6 @@ class PairedTrigger : public Trigger<> {
         explicit PairedTrigger(NukiLockComponent *parent) {
             parent->add_paired_callback([this]() { this->trigger(); });
         }
-};
-
-class NukiLockPairingModeSwitch : public Component, public switch_::Switch {
-    public:
-        Trigger<> *get_turn_on_trigger() const;
-        Trigger<> *get_turn_off_trigger() const;
-        void set_parent(NukiLockComponent *parent) { this->parent_ = parent; }
-    protected:
-        void setup() override;
-        void dump_config() override;
-        void write_state(bool state) override;
-        Trigger<> *turn_on_trigger_;
-        Trigger<> *turn_off_trigger_;
-        NukiLockComponent *parent_;
 };
 
 } //namespace nuki_lock

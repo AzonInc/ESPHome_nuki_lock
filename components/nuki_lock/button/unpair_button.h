@@ -7,12 +7,12 @@ namespace esphome {
 namespace nuki_lock {
 
 class NukiLockUnpairButton : public button::Button, public Parented<NukiLockComponent> {
- public:
-    NukiLockUnpairButton() = default;
+    public:
+        NukiLockUnpairButton() = default;
 
- protected:
-    void press_action() override;
-    void dump_config() override;
+    protected:
+        void press_action() override;
+        void dump_config() override;
 };
 
 }  // namespace nuki_lock

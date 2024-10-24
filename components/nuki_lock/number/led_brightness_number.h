@@ -7,13 +7,13 @@ namespace esphome {
 namespace nuki_lock {
 
 class NukiLockLedBrightnessNumber : public number::Number, public Parented<NukiLockComponent> {
- public:
-    NukiLockLedBrightnessNumber() = default;
+    public:
+        NukiLockLedBrightnessNumber() = default;
 
- protected:
-    void setup() override;
-    void dump_config() override;
-    void control(float value) override;
+    protected:
+        void setup() override;
+        void dump_config() override;
+        void control(float value) override;
 };
 
 }  // namespace nuki_lock
