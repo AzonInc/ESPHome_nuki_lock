@@ -1,19 +1,19 @@
 #include "led_brightness_number.h"
 
 namespace esphome {
-namespace nuki_lock {
+namespace nuki_hub {
 
-void NukiLockLedBrightnessNumber::setup() {
+void LedBrightnessNumber::setup() {
     this->publish_state(0);
 }
 
-void NukiLockLedBrightnessNumber::dump_config() {
+void LedBrightnessNumber::dump_config() {
     LOG_NUMBER(TAG, "LED Brightness", this);
 }
 
-void NukiLockLedBrightnessNumber::control(float value) {
+void LedBrightnessNumber::control(float value) {
     this->parent_->set_led_brightness(value);
 }
 
-}  // namespace nuki_lock
+}  // namespace nuki_hub
 }  // namespace esphome

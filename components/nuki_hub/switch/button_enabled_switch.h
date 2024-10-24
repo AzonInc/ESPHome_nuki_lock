@@ -1,14 +1,14 @@
 #pragma once
 
 #include "esphome/components/switch/switch.h"
-#include "../nuki_lock.h"
+#include "../nuki_hub.h"
 
 namespace esphome {
-namespace nuki_lock {
+namespace nuki_hub {
 
-class NukiLockPairingModeSwitch : public switch_::Switch, public Parented<NukiLockComponent> {
+class ButtonEnabledSwitch : public switch_::Switch, public Parented<NukiLockComponent> {
    public:
-      NukiLockPairingModeSwitch() = default;
+      ButtonEnabledSwitch() = default;
       Trigger<> *get_turn_on_trigger() const;
       Trigger<> *get_turn_off_trigger() const;
 
@@ -20,5 +20,5 @@ class NukiLockPairingModeSwitch : public switch_::Switch, public Parented<NukiLo
       Trigger<> *turn_off_trigger_;
 };
 
-}  // namespace nuki_lock
+}  // namespace nuki_hub
 }  // namespace esphome

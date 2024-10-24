@@ -1,15 +1,15 @@
 #include "unpair_button.h"
 
 namespace esphome {
-namespace nuki_lock {
+namespace nuki_hub {
 
-void NukiLockUnpairButton::press_action() {
+void UnpairButton::press_action() {
     this->parent_->unpair();
 }
 
-void NukiLockUnpairButton::dump_config() {
+void UnpairButton::dump_config() {
     LOG_BUTTON(TAG, "Unpair", this);
 }
 
-}  // namespace nuki_lock
+}  // namespace nuki_hub
 }  // namespace esphome

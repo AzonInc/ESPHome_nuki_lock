@@ -1,14 +1,14 @@
 #pragma once
 
 #include "esphome/components/number/number.h"
-#include "../nuki_lock.h"
+#include "../nuki_hub.h"
 
 namespace esphome {
-namespace nuki_lock {
+namespace nuki_hub {
 
-class NukiLockLedBrightnessNumber : public number::Number, public Parented<NukiLockComponent> {
+class LedBrightnessNumber : public number::Number, public Parented<NukiLockComponent> {
     public:
-        NukiLockLedBrightnessNumber() = default;
+        LedBrightnessNumber() = default;
 
     protected:
         void setup() override;
@@ -16,5 +16,5 @@ class NukiLockLedBrightnessNumber : public number::Number, public Parented<NukiL
         void control(float value) override;
 };
 
-}  // namespace nuki_lock
+}  // namespace nuki_hub
 }  // namespace esphome
