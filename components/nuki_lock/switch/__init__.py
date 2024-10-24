@@ -11,8 +11,6 @@ NukiLockPairingModeSwitch = nuki_lock_ns.class_("NukiLockPairingModeSwitch", swi
 NukiLockButtonEnabledSwitch = nuki_lock_ns.class_("NukiLockButtonEnabledSwitch", switch.Switch, cg.Component)
 NukiLockLedEnabledSwitch = nuki_lock_ns.class_("NukiLockLedEnabledSwitch", switch.Switch, cg.Component)
 
-DEPENDENCIES = ["nuki_lock"]
-
 CONF_PAIRING_MODE_SWITCH = "pairing_mode"
 CONF_BUTTON_ENABLED_SWITCH = "button_enabled"
 CONF_LED_ENABLED_SWITCH = "led_enabled"

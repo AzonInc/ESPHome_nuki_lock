@@ -5,7 +5,7 @@ from esphome.const import (
     UNIT_PERCENT,
     DEVICE_CLASS_BATTERY,
 )
-from .. import CONF_NUKI_LOCK_ID, NukiLockComponent, nuki_lock_ns
+from . import CONF_NUKI_LOCK_ID, NukiLockComponent
 
 DEPENDENCIES = ["nuki_lock"]
 

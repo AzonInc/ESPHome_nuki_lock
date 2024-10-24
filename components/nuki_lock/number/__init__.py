@@ -8,8 +8,6 @@ from .. import CONF_NUKI_LOCK_ID, NukiLockComponent, nuki_lock_ns
 
 NukiLockLedBrightnessNumber = nuki_lock_ns.class_("NukiLockLedBrightnessNumber", number.Number, cg.Component)
 
-DEPENDENCIES = ["nuki_lock"]
-
 CONF_LED_BRIGHTNESS_NUMBER = "led_brightness"
 
 CONFIG_SCHEMA = {

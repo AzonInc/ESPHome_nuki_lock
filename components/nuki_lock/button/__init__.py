@@ -8,8 +8,6 @@ from .. import CONF_NUKI_LOCK_ID, NukiLockComponent, nuki_lock_ns
 
 NukiLockUnpairButton = nuki_lock_ns.class_("NukiLockUnpairButton", button.Button, cg.Component)
 
-DEPENDENCIES = ["nuki_lock"]
-
 CONF_UNPAIR_BUTTON = "unpair"
 
 CONFIG_SCHEMA = {
