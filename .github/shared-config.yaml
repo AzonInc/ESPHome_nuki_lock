@@ -16,18 +16,50 @@ external_components:
       type: local
       path: "../components/"
 
+
+
+
 lock:
   - platform: nuki_lock
     name: My Nuki Lock
+    security_pin: 1234
+
+binary_sensor:
+  - platform: nuki_lock
     is_paired:
       name: "Nuki Paired"
-    battery_critical:
-      name: "Nuki Battery Critical"
-    battery_level:
-      name: "Nuki Battery Level"
     is_connected:
       name: "Nuki Connected"
+    battery_critical:
+      name: "Nuki Battery Critical"
     door_sensor:
       name: "Nuki Door Sensor"
+
+sensor:
+  - platform: nuki_lock
+    battery_level:
+      name: "Nuki Battery Level"
+
+text_sensor:
+  - platform: nuki_lock
     door_sensor_state:
       name: "Nuki Door Sensor State"
+
+number:
+  - platform: nuki_lock
+    led_brightness:
+      name: "Nuki LED Brightness"
+
+button:
+  - platform: nuki_lock
+    unpair:
+      name: "Nuki Unpair"
+
+switch:
+  - platform: nuki_lock
+    pairing_mode:
+      name: "Nuki Pairing Mode"
+    button_enabled:
+      name: "Nuki Button Enabled"
+    led_enabled:
+      name: "Nuki LED Enabled"
